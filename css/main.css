@@ -1427,15 +1427,9 @@ select {
     padding: 40px 0
 }
 
+/* NF-FIX: imagem do "expert" (médico) removida do tema */
 .expert__section:after {
-    position: absolute;
-    top: 20px;
-    right: -40px;
-    width: 215px;
-    height: 308px;
-    content: '';
-    background: url(../img/expert.png) no-repeat;
-    background-size: contain;
+    content: none
 }
 
 .expert__text {
@@ -1907,14 +1901,9 @@ select {
         padding: 90px 0
     }
 
+    /* NF-FIX: imagem de médico (xdoctor.png) removida do background da seção benefit */
     .benefit__section:after {
-        position: absolute;
-        bottom: -150px;
-        left: -350px;
-        width: 1055px;
-        height: 690px;
-        content: '';
-        background: url(../img/xdoctor.png.pagespeed.ic.egy_cZlrzg.webp)
+        content: none
     }
 
     .benefit__content--wrapper {
@@ -1940,13 +1929,7 @@ select {
     }
 
     .benefit__decor {
-        display: block
-    }
-
-    .benefit__decor-doctor {
-        position: absolute;
-        bottom: -20px;
-        left: -110px
+        display: none
     }
 
     .changes__section {
@@ -2196,13 +2179,9 @@ select {
         padding: 60px 50% 75px 0
     }
 
+    /* NF-FIX: imagem do "expert" (médico) removida também no breakpoint 768px */
     .expert__section:after {
-        top: inherit;
-        right: -100px;
-        bottom: 0;
-        width: 500px;
-        height: 714px;
-        background: url(../img/expert.png)
+        content: none
     }
 
     .expert__text {
@@ -2521,6 +2500,13 @@ select {
         padding-left: 10%
     }
 
+    /* NF-FIX: título e card de texto acima da imagem decorativa */
+    .research__title,
+    .research__content--wrapper {
+        position: relative;
+        z-index: 30
+    }
+
     .research__content--wrapper {
         margin-right: inherit;
         margin-left: inherit
@@ -2535,7 +2521,13 @@ select {
         right: 0;
         bottom: 100px;
         width: 600px;
-        height: 385px
+        height: 385px;
+        z-index: 1;
+        /* NF-FIX: reduz o boneco mantendo os pontos vermelhos alinhados */
+        -webkit-transform: scale(.72);
+        transform: scale(.72);
+        -webkit-transform-origin: 100% 100%;
+        transform-origin: 100% 100%
     }
 
     .research__decor-target {
@@ -2608,14 +2600,6 @@ select {
     .research__decor-target--5 {
         top: 215px;
         left: 410px
-    }
-
-    .benefit__section:after {
-        left: -200px
-    }
-
-    .benefit__decor-doctor {
-        left: 0
     }
 
     .changes__item {
@@ -2713,8 +2697,9 @@ select {
         padding: 150px 50% 75px 0
     }
 
+    /* NF-FIX: imagem do "expert" (médico) removida também no breakpoint 992px */
     .expert__section:after {
-        right: 0
+        content: none
     }
 
     .reviews__list {
@@ -2994,9 +2979,14 @@ select {
     }
 
     .research__decor-man {
-        bottom: 40px;
+        bottom: 20px;
         width: 804px;
-        height: 516px
+        height: 516px;
+        /* NF-FIX: mantém redução também no breakpoint 1200px */
+        -webkit-transform: scale(.7);
+        transform: scale(.7);
+        -webkit-transform-origin: 100% 100%;
+        transform-origin: 100% 100%
     }
 
     .research__decor-target--1 {
@@ -3126,10 +3116,6 @@ select {
 
     .result__diagram {
         width: 760px
-    }
-
-    .expert__section:after {
-        right: 90px
     }
 
     .reviews {
