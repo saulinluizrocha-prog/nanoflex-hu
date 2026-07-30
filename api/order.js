@@ -33,8 +33,17 @@ function normalizePhone(phone) {
 
 function parseBody(req) {
     return new Promise((resolve) => {
-        if (req.body && typeof req.body === 'object') {
-            return resolve(req.body);
+        if (req.body) {
+            if (typeof req.body === 'object') {
+                return resolve(req.body);
+            }
+            if (typeof req.body === 'string') {
+                try {
+                    return resolve(JSON.parse(req.body));
+                } catch (e) {
+                    return resolve(querystring.parse(req.body));
+                }
+            }
         }
         let bodyStr = '';
         req.on('data', chunk => {
@@ -111,6 +120,14 @@ function postToTerra(payload) {
     });
 }
 
+function redirectUser(res, targetUrl) {
+    if (typeof res.redirect === 'function') {
+        return res.redirect(302, targetUrl);
+    }
+    res.writeHead(302, { Location: targetUrl });
+    return res.end();
+}
+
 module.exports = async function handler(req, res) {
     if (req.method !== 'POST' && req.method !== 'GET') {
         res.setHeader('Allow', ['POST', 'GET']);
@@ -166,7 +183,12 @@ module.exports = async function handler(req, res) {
             data: leadParams
         };
 
-        const apiResult = await postToTerra(terraPayload);
+        let apiResult = null;
+        try {
+            apiResult = await postToTerra(terraPayload);
+        } catch (apiErr) {
+            console.error('Terra API Call Failed:', apiErr);
+        }
 
         let redirectTarget = queryData.redirect || 'success.html';
         if (req.url && req.url.includes('hu-send')) {
@@ -176,19 +198,14 @@ module.exports = async function handler(req, res) {
         if (apiResult && apiResult.status === 'ok' && apiResult.data) {
             const leadId = apiResult.data.id || apiResult.data.lead_id || '';
             const targetUrl = `/${redirectTarget}?id=${encodeURIComponent(leadId)}`;
-            res.writeHead(302, { Location: targetUrl });
-            return res.end();
+            return redirectUser(res, targetUrl);
         } else {
-            const errorMsg = (apiResult && apiResult.error) ? apiResult.error : 'Unknown API error';
-            console.error('Terra API Error:', errorMsg);
-            // Fallback redirect to success page so lead isn't lost for user experience
-            res.writeHead(302, { Location: `/${redirectTarget}?status=submitted` });
-            return res.end();
+            const targetUrl = `/${redirectTarget}?status=submitted`;
+            return redirectUser(res, targetUrl);
         }
     } catch (err) {
         console.error('Handler Error:', err);
         let redirectTarget = req.query && req.query.redirect ? req.query.redirect : 'success.html';
-        res.writeHead(302, { Location: `/${redirectTarget}?status=submitted` });
-        return res.end();
+        return redirectUser(res, `/${redirectTarget}?status=submitted`);
     }
 };
