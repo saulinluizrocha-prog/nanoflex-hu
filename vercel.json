@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "rewrites": [
+    { "source": "/api.php", "destination": "/api/order" },
+    { "source": "/hu-send.php", "destination": "/api/order?redirect=hu-success.html" },
+    { "source": "/land/order", "destination": "/api/order" }
+  ]
+}
