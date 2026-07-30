@@ -25,12 +25,12 @@
     var promoEl = document.getElementsByClassName("al-cost-promo");
 
     for(var i = 0; i < promoEl.length; i++){
-        promoEl[i].innerText = "298 RON";
+        promoEl[i].innerText = "17 900 Ft";
     }
 
     var priceEl = document.getElementsByClassName("al-cost");
 
     for(var i = 0; i < priceEl.length; i++){
-        priceEl[i].innerText = "149 RON";
+        priceEl[i].innerText = "8 900 Ft";
     }
 })(); 
